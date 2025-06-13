@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const cloudinary = require('../config/cloudinary').cloudinary; // Import configured Cloudinary
 
 const ideaSchema = new mongoose.Schema({
+
   title: { type: String, required: true },
   description: String,
   tags: [String],
