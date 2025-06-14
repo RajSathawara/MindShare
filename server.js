@@ -3,12 +3,16 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes'); // Authentication routes
 const ideaRoutes = require("./routes/ideaRoutes"); // Idea management routes
-
+const cors = require('cors'); // CORS middleware
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin: "http://localhost:5173", // allow Vite frontend
+  credentials: true
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use("/api/ideas", ideaRoutes);
