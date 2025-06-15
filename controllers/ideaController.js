@@ -9,7 +9,7 @@ exports.createIdea = async (req, res) => {
     const newIdea = new Idea({
       title,
       description,
-      tags: tags?.split(",").map(tag => tag.trim()) || [], // 💡 Convert CSV tags to array
+      tags: Array.isArray(tags) ? tags : [], // 💡 Convert CSV tags to array
       image,
       creator: req.userId,
     });

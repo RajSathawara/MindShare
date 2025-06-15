@@ -1,30 +1,39 @@
 import React, { useState } from "react";
-import axios from "axios";
 
-function Login({ onLoginSuccess }) {
+function Login({ setView }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
 
-      const { token, userId } = res.data;
-      // Save token (for future requests)
-      localStorage.setItem("token", token);
-      localStorage.setItem("userId", userId);
+      const data = await response.json();
 
-      // Optional: Call parent component to update login state
-      onLoginSuccess(); // Can be used to navigate to dashboard or change screen
-    } catch (err) {
-      console.error(err);
-      setError("Login failed. Invalid email or password.");
+      if (response.ok) {
+        console.log("Login successful:", data);
+
+        // ✅ Store token
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("loginTime", new Date().getTime()); // ✅ store login timestamp
+setView("dashboard");
+
+        // ✅ Navigate to dashboard
+        setView("dashboard");
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Something went wrong. Try again.");
     }
   };
 
@@ -39,7 +48,6 @@ function Login({ onLoginSuccess }) {
           onChange={(e) => setEmail(e.target.value)}
           required
         /><br /><br />
-
         <input
           type="password"
           placeholder="Password"
@@ -47,11 +55,13 @@ function Login({ onLoginSuccess }) {
           onChange={(e) => setPassword(e.target.value)}
           required
         /><br /><br />
-
         <button type="submit">Login</button>
       </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <p>
+        Don't have an account?{" "}
+        <button onClick={() => setView("signup")}>Signup here</button>
+      </p>
     </div>
   );
 }

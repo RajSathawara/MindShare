@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes'); // Authentication routes
 const ideaRoutes = require("./routes/ideaRoutes"); // Idea management routes
+const userRoutes = require("./routes/userRoutes"); // User management routes
 const cors = require('cors'); // CORS middleware
 
 dotenv.config();
@@ -16,6 +17,8 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use("/api/ideas", ideaRoutes);
+app.use("/api", userRoutes);
+
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('🚀 MongoDB database Connected'))

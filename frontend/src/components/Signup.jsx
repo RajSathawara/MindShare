@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Signup({ onSignupSuccess }) {
+function Signup({ setView }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,30 +24,24 @@ function Signup({ onSignupSuccess }) {
   };
 
   return (
-    <form onSubmit={handleSignup}>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Sign Up</button>
-    </form>
+    <div>
+  <h2>Signup</h2>
+  <form onSubmit={handleSignup}>
+    <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+    <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+    <button type="submit">Signup</button>
+  </form>
+
+  <p>
+  Already have an account?{" "}
+  <span onClick={() => setView("login")} style={{ color: "blue", cursor: "pointer" }}>
+    Login
+  </span>
+</p>
+    </div>
+
+    
   );
 }
 
